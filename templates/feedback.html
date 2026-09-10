@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Feedback - PeopleHub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/feedback.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     SIDEBAR
+============================== -->
+
+<aside id="sidebar">
+
+    <div id="sidebar-content">
+
+
+        <!-- LOGO -->
+
+        <div id="logo">
+
+            <img
+                src="{{ url_for('static', filename='img/logo.png') }}"
+                alt="PeopleHub"
+            >
+
+            <h2>PeopleHub</h2>
+
+            <span>Gestão de Pessoas</span>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <nav>
+
+            <ul>
+
+
+                <!-- DASHBOARD -->
+
+                <li>
+
+                    <a href="{{ url_for('dashboard.dashboard_page') }}">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+                <!-- COLABORADORES -->
+                
+
+                {% if session.get("perfil") == "Gestor" %}
+
+<li>
+    <a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+        <i class="fa-solid fa-users"></i>
+        Colaboradores
+    </a>
+</li>
+
+{% endif %}
+
+
+                <!-- METAS -->
+
+                <li>
+
+                    <a href="{{ url_for('metas.pagina_metas') }}">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Metas
+
+                        {% else %}
+
+                            Minhas Metas
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- AVALIAÇÕES -->
+
+                <li>
+
+                    <a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Avaliações
+
+                        {% else %}
+
+                            Minhas Avaliações
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- TREINAMENTOS -->
+
+                <li>
+
+                    <a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Treinamentos
+
+                    </a>
+
+                </li>
+
+
+                <!-- FEEDBACK -->
+
+                <li class="ativo">
+
+                    <a href="{{ url_for('feedback.pagina_feedback') }}">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Feedback
+
+                    </a>
+
+                </li>
+
+
+                <!-- PLANO DE CARREIRA -->
+
+                <li>
+
+                    <a href="{{ url_for('carreira.pagina_carreira') }}">
+
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+
+                        Plano de Carreira
+
+                    </a>
+
+                </li>
+
+
+                <!-- FÉRIAS -->
+
+                <li>
+
+                    <a href="{{ url_for('ferias.pagina_ferias') }}">
+
+                        <i class="fa-solid fa-plane"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Férias
+
+                        {% else %}
+
+                            Minhas Férias
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- PONTO -->
+
+                <li>
+
+                    <a href="{{ url_for('ponto.pagina_ponto') }}">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Controle de Ponto
+
+                        {% else %}
+
+                            Meu Ponto
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- CONFIGURAÇÕES -->
+
+                {% if session.get("perfil") == "Gestor" %}
+
+                <li>
+
+                    <a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Configurações
+
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+
+            </ul>
+
+        </nav>
+
+
+    </div>
+
+
+    <!-- SAIR -->
+
+    <button id="btn-sair">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Sair
+
+    </button>
+
+
+</aside>
+
+
+
+<!-- ==============================
+     CONTEÚDO
+============================== -->
+
+<main>
+
+
+    <!-- CABEÇALHO -->
+
+    <header class="topo">
+
+        <div>
+
+            <h1>
+                Feedback
+            </h1>
+
+            <p>
+
+                {% if session.get("perfil") == "Gestor" %}
+
+                    Gerencie os feedbacks dos colaboradores.
+
+                {% else %}
+
+                    Acompanhe seus feedbacks e orientações.
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <!-- NOVO FEEDBACK
+             SOMENTE GESTOR -->
+
+        {% if session.get("perfil") == "Gestor" %}
+
+        <button
+            class="novo"
+            onclick="abrirFormularioFeedback()"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Novo Feedback
+
+        </button>
+
+        {% endif %}
+
+
+    </header>
+
+        <!-- MODAL VISUALIZAR FEEDBACK -->
+
+<div id="modal-ver-feedback" class="modal">
+
+    <div class="formulario-card">
+
+        <h2>
+            <i class="fa-solid fa-comments"></i>
+            Feedback
+        </h2>
+
+
+        <p>
+            <strong>Tipo:</strong>
+            <span id="ver-tipo"></span>
+        </p>
+
+
+        <p>
+            <strong>Responsável:</strong>
+            <span id="ver-responsavel"></span>
+        </p>
+
+
+        <p>
+            <strong>Data:</strong>
+            <span id="ver-data"></span>
+        </p>
+
+
+        <div class="campo">
+
+            <label>
+                Mensagem
+            </label>
+
+
+            <textarea
+                id="ver-mensagem"
+                readonly
+            ></textarea>
+
+        </div>
+
+
+        <button
+            type="button"
+            onclick="fecharVisualizarFeedback()"
+        >
+            Fechar
+        </button>
+
+
+    </div>
+
+</div>
+
+
+    <!-- ==============================
+         CARDS
+    ============================== -->
+
+    <section class="cards">
+
+
+        <div class="card-info">
+
+            <h3>
+                Total
+            </h3>
+
+            <span id="total-feedbacks">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="card-info">
+
+            <h3>
+                Positivos
+            </h3>
+
+            <span id="feedbacks-positivos">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="card-info">
+
+            <h3>
+                Construtivos
+            </h3>
+
+            <span id="feedbacks-construtivos">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="card-info">
+
+            <h3>
+                Pendentes
+            </h3>
+
+            <span id="feedbacks-pendentes">
+                0
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         FILTROS
+    ============================== -->
+
+    <section class="filtros">
+
+
+        <input
+            id="pesquisa"
+            type="text"
+            onkeyup="pesquisarFeedback()"
+            placeholder="Pesquisar colaborador..."
+        >
+
+
+        <select
+            id="filtro-tipo"
+            onchange="filtrarFeedback()"
+        >
+
+            <option value="">
+                Todos os tipos
+            </option>
+
+            <option value="Positivo">
+                Positivo
+            </option>
+
+            <option value="Construtivo">
+                Construtivo
+            </option>
+
+        </select>
+
+
+        <select
+            id="filtro-status"
+            onchange="filtrarFeedback()"
+        >
+
+            <option value="">
+                Todos os status
+            </option>
+
+            <option value="Pendente">
+                Pendente
+            </option>
+
+            <option value="Enviado">
+                Enviado
+            </option>
+
+        </select>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         TABELA
+    ============================== -->
+
+    <section class="tabela">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Colaborador
+                    </th>
+
+                    <th>
+                        Responsável
+                    </th>
+
+                    <th>
+                        Tipo
+                    </th>
+
+                    <th>
+                        Data
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+
+                    <!-- AÇÕES SOMENTE GESTOR -->
+
+                    {% if session.get("perfil") == "Gestor" %}
+
+                    <th>
+                        Ações
+                    </th>
+
+                    {% endif %}
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="lista-feedbacks">
+
+            </tbody>
+
+
+        </table>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         MODAL NOVO FEEDBACK
+         SOMENTE GESTOR
+    ============================== -->
+
+    {% if session.get("perfil") == "Gestor" %}
+
+    <div
+        id="modal-feedback"
+        class="modal"
+    >
+
+
+        <div class="formulario-card">
+
+
+            <h2>
+
+                <i class="fa-solid fa-comments"></i>
+
+                Novo Feedback
+
+            </h2>
+
+
+
+            <form id="form-feedback">
+
+
+                <input
+                    type="hidden"
+                    id="id"
+                >
+
+                   <div class="campo">
+
+                    <label>
+                    Tipo de envio
+                    </label>
+
+
+                    <select id="tipo_envio">
+
+                    <option value="individual">
+                    Feedback individual
+                    </option>
+
+
+                    <option value="massa">
+                    Selecionar vários colaboradores
+                    </option>
+
+                    </select>
+
+                    </div>
+
+
+
+                <!-- COLABORADOR -->
+
+                    <div class="campo" id="campo-colaborador">
+
+                    <label>
+                    Colaborador
+                    </label>
+
+
+                    <select id="colaborador_id">
+
+                    <option value="">
+                    Selecione um colaborador
+                    </option>
+
+                    </select>
+
+                    </div>
+
+
+
+                    <!-- SELEÇÃO EM MASSA -->
+
+                    <div 
+                    class="campo"
+                    id="campo-massa"
+                    style="display:none;"
+                    >
+
+                    <label>
+                    Selecionar colaboradores
+                    </label>
+
+
+                    <div id="checkbox-colaboradores">
+
+                    </div>
+
+
+                    </div>
+
+
+
+                <!-- TIPO -->
+
+                <div class="campo">
+
+                    <label>
+                        Tipo
+                    </label>
+
+
+                    <select id="tipo">
+
+                        <option value="Positivo">
+                            Positivo
+                        </option>
+
+                        <option value="Construtivo">
+                            Construtivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="campo">
+
+                    <label>
+                        Status
+                    </label>
+
+
+                    <select id="status">
+
+                        <option value="Pendente">
+                            Pendente
+                        </option>
+
+                        <option value="Enviado">
+                            Enviado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- MENSAGEM -->
+
+                <div class="campo">
+
+                    <label>
+                        Mensagem
+                    </label>
+
+
+                    <textarea
+                        id="mensagem"
+                        placeholder="Digite o feedback"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- AÇÕES DO FORMULÁRIO -->
+
+                <div class="acoes-form">
+
+
+                    <button
+                        type="submit"
+                        class="btn-cadastrar"
+                        id="texto-botao"
+                    >
+
+                        Salvar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onclick="fecharFormularioFeedback()"
+                    >
+
+                        Cancelar
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+            <p id="mensagem-retorno"></p>
+
+
+        </div>
+
+
+    </div>
+
+    {% endif %}
+
+
+</main>
+
+
+
+<!-- ==============================
+     PERFIL
+============================== -->
+
+<script>
+
+window.perfilUsuario =
+    "{{ session.get('perfil') }}";
+
+</script>
+
+
+
+<!-- ==============================
+     JAVASCRIPT
+============================== -->
+
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+
+</body>
+
+</html>

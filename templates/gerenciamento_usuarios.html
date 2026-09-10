@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gerenciar Usuários - PeopleHub</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gerenciamento_usuarios.css') }}">
+
+
+</head>
+
+
+<body>
+
+
+<aside id="sidebar">
+
+<div id="sidebar-content">
+
+
+<div id="logo">
+
+<img src="{{ url_for('static', filename='img/logo.png') }}">
+
+<h2>PeopleHub</h2>
+
+<span>Gestão de Pessoas</span>
+
+</div>
+
+
+
+<nav>
+
+<ul>
+
+
+<li>
+
+<a href="{{ url_for('dashboard.dashboard_page') }}">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+<i class="fa-solid fa-users"></i>
+
+Colaboradores
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('metas.pagina_metas') }}">
+
+<i class="fa-solid fa-bullseye"></i>
+
+Metas
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Avaliações
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Treinamentos
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('feedback.pagina_feedback') }}">
+
+<i class="fa-solid fa-comments"></i>
+
+Feedback
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('carreira.pagina_carreira') }}">
+
+<i class="fa-solid fa-arrow-trend-up"></i>
+
+Plano de Carreira
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('ferias.pagina_ferias') }}">
+
+<i class="fa-solid fa-plane"></i>
+
+Férias
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('ponto.pagina_ponto') }}">
+
+<i class="fa-solid fa-clock"></i>
+
+Controle de Ponto
+
+</a>
+
+</li>
+
+
+
+<li class="ativo">
+
+<a href="{{ url_for('usuarios.gerenciamento') }}">
+
+<i class="fa-solid fa-gear"></i>
+
+Configurações
+
+</a>
+
+</li>
+
+
+</ul>
+
+</nav>
+
+
+</div>
+
+
+
+
+<button id="btn-sair">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Sair
+
+</button>
+
+
+</aside>
+
+
+
+
+
+<main>
+
+
+
+<header class="topo">
+
+
+<div>
+
+<h1>
+Gerenciamento de Usuários
+</h1>
+
+
+<p>
+Controle de acessos e permissões do sistema.
+</p>
+
+
+</div>
+
+
+
+
+<a href="{{ url_for('cadastro.pagina') }}">
+
+<button class="novo">
+
+<i class="fa-solid fa-user-plus"></i>
+
+Novo Usuário
+
+</button>
+
+</a>
+
+
+
+</header>
+
+
+
+
+
+<section class="cards">
+
+
+<div class="card-info">
+
+<i class="fa-solid fa-users"></i>
+
+<h3>Total de Usuários</h3>
+
+<span id="total">
+0
+</span>
+
+</div>
+
+
+
+<div class="card-info">
+
+<i class="fa-solid fa-user-tie"></i>
+
+<h3>Gestores</h3>
+
+<span id="gestores">
+0
+</span>
+
+</div>
+
+
+
+<div class="card-info">
+
+<i class="fa-solid fa-user-check"></i>
+
+<h3>Colaboradores</h3>
+
+<span id="colaboradores">
+0
+</span>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section class="tabela">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+
+<th>Email</th>
+
+<th>Perfil</th>
+
+<th>Cargo</th>
+
+<th>Setor</th>
+
+<th>Ações</th>
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="lista-usuarios">
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</section>
+
+
+
+
+</main>
+
+
+
+
+
+
+<script>
+
+
+let usuarioEditando = null;
+
+
+
+async function carregarUsuarios(){
+
+
+const resposta = await fetch(
+"/api/usuarios"
+);
+
+
+const usuarios = await resposta.json();
+
+
+
+let tabela="";
+
+
+let gestores=0;
+
+let colaboradores=0;
+
+
+
+usuarios.forEach(usuario=>{
+
+
+if(usuario.perfil==="Gestor"){
+gestores++;
+}else{
+colaboradores++;
+}
+
+
+
+let classe =
+usuario.perfil==="Gestor"
+?
+"gestor"
+:
+"colaborador";
+
+
+
+tabela += `
+
+<tr>
+
+<td>
+<i class="fa-solid fa-circle-user"></i>
+${usuario.nome}
+</td>
+
+
+<td>
+${usuario.email}
+</td>
+
+
+<td>
+
+<span class="badge ${classe}">
+${usuario.perfil}
+</span>
+
+</td>
+
+
+<td>
+${usuario.cargo ?? "-"}
+</td>
+
+
+<td>
+${usuario.setor ?? "-"}
+</td>
+
+
+<td class="acoes">
+
+
+<button 
+class="editar"
+onclick="abrirModal(${usuario.id},
+'${usuario.nome}',
+'${usuario.email}',
+'${usuario.perfil}',
+'${usuario.cargo ?? ""}',
+'${usuario.setor ?? ""}')">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+
+
+<button 
+class="excluir"
+onclick="excluirUsuario(${usuario.id})">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+
+
+</td>
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+
+document.getElementById(
+"lista-usuarios"
+).innerHTML=tabela;
+
+
+
+document.getElementById(
+"total"
+).innerHTML=usuarios.length;
+
+
+document.getElementById(
+"gestores"
+).innerHTML=gestores;
+
+
+document.getElementById(
+"colaboradores"
+).innerHTML=colaboradores;
+
+
+
+}
+
+
+
+
+
+
+function abrirModal(
+id,
+nome,
+email,
+perfil,
+cargo,
+setor
+){
+
+
+usuarioEditando=id;
+
+
+
+document.getElementById(
+"editNome"
+).value=nome;
+
+
+
+document.getElementById(
+"editEmail"
+).value=email;
+
+
+
+document.getElementById(
+"editPerfil"
+).value=perfil;
+
+
+
+document.getElementById(
+"editCargo"
+).value=cargo;
+
+
+
+document.getElementById(
+"editSetor"
+).value=setor;
+
+
+
+document.getElementById(
+"modalEditar"
+).style.display="flex";
+
+
+}
+
+
+
+
+
+function fecharModal(){
+
+
+document.getElementById(
+"modalEditar"
+).style.display="none";
+
+
+}
+
+
+
+
+
+
+
+async function salvarEdicao(){
+
+
+const dados={
+
+
+nome:
+document.getElementById(
+"editNome"
+).value,
+
+
+email:
+document.getElementById(
+"editEmail"
+).value,
+
+
+perfil:
+document.getElementById(
+"editPerfil"
+).value,
+
+
+cargo:
+document.getElementById(
+"editCargo"
+).value,
+
+
+setor:
+document.getElementById(
+"editSetor"
+).value
+
+
+};
+
+
+
+
+const resposta = await fetch(
+
+`/api/usuarios/${usuarioEditando}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":
+"application/json"
+
+},
+
+body:
+JSON.stringify(dados)
+
+}
+
+
+);
+
+
+
+
+const resultado =
+await resposta.json();
+
+
+
+alert(resultado.mensagem);
+
+
+
+fecharModal();
+
+carregarUsuarios();
+
+
+
+}
+
+
+
+
+
+
+async function excluirUsuario(id){
+
+
+if(
+!confirm(
+"Deseja excluir este usuário?"
+)
+){
+
+return;
+
+}
+
+
+
+const resposta = await fetch(
+
+`/api/usuarios/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+
+
+const dados =
+await resposta.json();
+
+
+
+alert(
+dados.mensagem
+);
+
+
+
+carregarUsuarios();
+
+
+
+}
+
+
+
+
+carregarUsuarios();
+
+
+
+</script>
+
+
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+<div id="modalEditar" class="modal">
+
+
+<div class="modal-conteudo">
+
+
+<h2>
+Editar Usuário
+</h2>
+
+
+
+<input id="editNome" placeholder="Nome">
+
+
+<input id="editEmail" placeholder="Email">
+
+
+<select id="editPerfil">
+
+<option>
+Funcionário
+</option>
+
+<option>
+Gestor
+</option>
+
+</select>
+
+
+
+<input id="editCargo" placeholder="Cargo">
+
+
+<input id="editSetor" placeholder="Setor">
+
+
+
+<div class="modal-botoes">
+
+
+<button onclick="salvarEdicao()">
+Salvar
+</button>
+
+
+<button onclick="fecharModal()">
+Cancelar
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>

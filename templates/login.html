@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PeopleHub - Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+<div class="logo">
+
+<img src="{{ url_for('static', filename='img/logoroxo.png') }}">
+
+</div>
+
+
+<h1>PeopleHub</h1>
+
+
+<p class="descricao">
+Gestão integrada de pessoas e desempenho
+</p>
+
+
+
+<form id="loginForm">
+
+
+<div class="campo">
+
+<i class="fa-solid fa-envelope"></i>
+
+<input 
+type="email"
+id="email"
+placeholder="E-mail"
+autocomplete="username"
+required>
+
+</div>
+
+
+
+<div class="campo">
+
+<i class="fa-solid fa-lock"></i>
+
+<input 
+type="password"
+id="senha"
+placeholder="Senha"
+autocomplete="current-password"
+required>
+
+</div>
+
+
+
+<button type="submit">
+
+Entrar
+
+</button>
+
+
+</form>
+
+
+
+<div id="mensagem"></div>
+
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+
+
+</body>
+
+</html>

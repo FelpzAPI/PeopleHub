@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Metas - PeopleHub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/metas.css') }}"
+>
+
+</head>
+
+
+<body>
+
+
+<!-- ============================== -->
+<!-- SIDEBAR -->
+<!-- ============================== -->
+
+<aside id="sidebar">
+
+    <div id="sidebar-content">
+
+
+        <!-- LOGO -->
+
+        <div id="logo">
+
+            <img
+                src="{{ url_for('static', filename='img/logo.png') }}"
+                alt="PeopleHub"
+            >
+
+            <h2>
+                PeopleHub
+            </h2>
+
+            <span>
+                Gestão de Pessoas
+            </span>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <nav>
+
+            <ul>
+
+
+                <!-- DASHBOARD -->
+
+                <li>
+
+                    <a href="{{ url_for('dashboard.dashboard_page') }}">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+
+                <!-- COLABORADORES -->
+
+                {% if session.get("perfil") == "Gestor" %}
+
+<li>
+    <a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+        <i class="fa-solid fa-users"></i>
+        Colaboradores
+    </a>
+</li>
+
+{% endif %}
+
+
+                <!-- METAS -->
+
+                <li class="menu-ativo">
+
+                    <a href="{{ url_for('metas.pagina_metas') }}">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+                            Metas
+                        {% else %}
+                            Minhas Metas
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- AVALIAÇÕES -->
+
+                <li>
+
+                    <a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+                            Avaliações
+                        {% else %}
+                            Minhas Avaliações
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- TREINAMENTOS -->
+
+                <li>
+
+                    <a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Treinamentos
+
+                    </a>
+
+                </li>
+
+
+                <!-- FEEDBACK -->
+
+                <li>
+
+                    <a href="{{ url_for('feedback.pagina_feedback') }}">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Feedback
+
+                    </a>
+
+                </li>
+
+
+                <!-- PLANO DE CARREIRA -->
+
+                <li>
+
+                    <a href="{{ url_for('carreira.pagina_carreira') }}">
+
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+
+                        Plano de Carreira
+
+                    </a>
+
+                </li>
+
+
+                <!-- FÉRIAS -->
+
+                <li>
+
+                    <a href="{{ url_for('ferias.pagina_ferias') }}">
+
+                        <i class="fa-solid fa-plane"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+                            Férias
+                        {% else %}
+                            Minhas Férias
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- CONTROLE DE PONTO -->
+
+                <li>
+
+                    <a href="{{ url_for('ponto.pagina_ponto') }}">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+                            Controle de Ponto
+                        {% else %}
+                            Meu Ponto
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- CONFIGURAÇÕES -->
+
+                {% if session.get("perfil") == "Gestor" %}
+
+                <li>
+
+                    <a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Configurações
+
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+
+            </ul>
+
+        </nav>
+
+
+    </div>
+
+
+    <!-- SAIR -->
+
+    <button id="btn-sair">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Sair
+
+    </button>
+
+
+</aside>
+
+
+
+<!-- ============================== -->
+<!-- CONTEÚDO PRINCIPAL -->
+<!-- ============================== -->
+
+<main>
+
+
+    <!-- ============================== -->
+    <!-- CABEÇALHO -->
+    <!-- ============================== -->
+
+    <header class="topo">
+
+        <div>
+
+            {% if session.get("perfil") == "Gestor" %}
+
+            <h1>
+                Metas
+            </h1>
+
+            <p>
+                Gerencie as metas dos colaboradores.
+            </p>
+
+            {% else %}
+
+            <h1>
+                Minhas Metas
+            </h1>
+
+            <p>
+                Acompanhe suas metas e seu desempenho.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SOMENTE GESTOR -->
+
+        {% if session.get("perfil") == "Gestor" %}
+
+        <a
+            href="{{ url_for('metas.nova_meta') }}"
+            class="nova-meta"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nova Meta
+
+        </a>
+
+        {% endif %}
+
+
+    </header>
+
+
+
+    <!-- ============================== -->
+    <!-- CARDS -->
+    <!-- ============================== -->
+
+    <section class="cards">
+
+
+        <!-- TOTAL -->
+
+        <div class="card-info">
+
+            <h3>
+                Total
+            </h3>
+
+            <span id="total-metas">
+                --
+            </span>
+
+        </div>
+
+
+        <!-- EM ANDAMENTO -->
+
+        <div class="card-info">
+
+            <h3>
+                Em andamento
+            </h3>
+
+            <span id="metas-andamento">
+                --
+            </span>
+
+        </div>
+
+
+        <!-- CONCLUÍDAS -->
+
+        <div class="card-info">
+
+            <h3>
+                Concluídas
+            </h3>
+
+            <span id="metas-concluidas">
+                --
+            </span>
+
+        </div>
+
+
+        <!-- ATRASADAS -->
+
+        <div class="card-info">
+
+            <h3>
+                Atrasadas
+            </h3>
+
+            <span id="metas-atrasadas">
+                --
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ============================== -->
+    <!-- FILTROS -->
+    <!-- ============================== -->
+
+    <section class="filtros">
+
+
+        <!-- PESQUISA -->
+
+        <input
+            id="pesquisa-meta"
+            type="text"
+            placeholder="Pesquisar meta..."
+        >
+
+
+        <!-- STATUS -->
+
+        <select id="filtro-status">
+
+            <option value="">
+                Todas
+            </option>
+
+            <option value="Em andamento">
+                Em andamento
+            </option>
+
+            <option value="Concluída">
+                Concluída
+            </option>
+
+            <option value="Atrasada">
+                Atrasada
+            </option>
+
+        </select>
+
+
+    </section>
+
+
+
+    <!-- ============================== -->
+    <!-- TABELA -->
+    <!-- ============================== -->
+
+    <section class="tabela">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Título
+                    </th>
+
+
+                    {% if session.get("perfil") == "Gestor" %}
+
+                    <th>
+                        Colaborador
+                    </th>
+
+                    {% endif %}
+
+
+                    <th>
+                        Prazo
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+
+                    <!--
+                        A classe é importante.
+                        O metas.js usa essa classe
+                        para esconder a coluna
+                        quando o usuário é Funcionário.
+                    -->
+
+                    {% if session.get("perfil") == "Gestor" %}
+
+                    <th class="coluna-acoes">
+                        Ações
+                    </th>
+
+                    {% endif %}
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="lista-metas">
+
+            </tbody>
+
+
+        </table>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ============================== -->
+<!-- JAVASCRIPT -->
+<!-- ============================== -->
+
+<script
+    src="{{ url_for('static', filename='js/metas.js') }}"
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/logout.js') }}"
+></script>
+
+
+</body>
+
+</html>

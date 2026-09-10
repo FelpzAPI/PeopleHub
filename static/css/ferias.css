@@ -1,0 +1,568 @@
+.topo-ferias{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topo-ferias h1{
+    color:#6f42c1;
+}
+
+.topo-ferias p{
+    color:#666;
+}
+
+.novo-ferias{
+    background:#6f42c1;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.novo-ferias:hover{
+    background:#5a189a;
+}
+
+
+/* CARDS */
+
+.cards-ferias{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+
+}
+
+.card-ferias{
+
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.card-ferias span{
+
+    display:block;
+    margin-top:10px;
+    font-size:32px;
+    font-weight:700;
+    color:#6f42c1;
+
+}
+
+
+/* FILTROS */
+
+.filtros-ferias{
+
+    display:flex;
+    gap:20px;
+    margin-bottom:25px;
+
+}
+
+.filtros-ferias input,
+.filtros-ferias select{
+
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+
+}
+
+.filtros-ferias input{
+
+    flex:1;
+
+}
+
+
+/* TABELA */
+
+.tabela-ferias{
+
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+.tabela-ferias table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+
+.tabela-ferias thead{
+
+    background:#6f42c1;
+    color:white;
+
+}
+
+
+.tabela-ferias th,
+.tabela-ferias td{
+
+    padding:16px;
+    text-align:left;
+
+}
+
+
+.tabela-ferias tbody tr:hover{
+
+    background:#f8f3ff;
+
+}
+
+
+/* STATUS */
+
+.aprovada{
+
+background:#d4edda;
+
+color:#155724;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:600;
+
+}
+
+
+
+.pendente{
+
+background:#fff3cd;
+
+color:#856404;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:600;
+
+}
+
+
+
+.andamento{
+
+background:#cfe2ff;
+
+color:#084298;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:600;
+
+}
+
+
+/* BOTÕES */
+
+.editar-ferias,
+.excluir-ferias{
+
+    border:none;
+    padding:8px 10px;
+    border-radius:6px;
+    cursor:pointer;
+
+}
+
+
+.editar-ferias{
+
+    background:#0d6efd;
+    color:white;
+
+}
+
+
+.excluir-ferias{
+
+    background:#dc3545;
+    color:white;
+
+}
+
+/* ==============================
+   MODAL FÉRIAS
+============================== */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.45);
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+
+/* CARD DO FORM */
+
+.formulario-card{
+
+    background:#fff;
+
+    width:450px;
+
+    padding:30px;
+
+    border-radius:16px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.2);
+
+}
+
+
+
+/* TÍTULO */
+
+.formulario-card h2{
+
+    color:#6f42c1;
+
+    margin-bottom:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+
+/* CAMPOS */
+
+.campo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.campo label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:#444;
+
+}
+
+
+
+.campo input,
+.campo select{
+
+    padding:12px;
+
+    border-radius:8px;
+
+    border:1px solid #ddd;
+
+    font-family:'Jost';
+
+}
+
+
+
+/* BOTÕES */
+
+.acoes-form{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+
+.btn-cadastrar{
+
+    background:#6f42c1;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+.acoes-form button[type="button"]{
+
+    background:#ddd;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+/* ==============================
+   BOTÕES DE AÇÃO FÉRIAS
+============================== */
+
+
+.btn-aprovar,
+.btn-reprovar,
+.btn-excluir{
+
+    border:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-family:'Jost', sans-serif;
+
+    font-weight:600;
+
+    margin-right:8px;
+
+    transition:.2s;
+
+}
+
+
+/* APROVAR */
+
+.btn-aprovar{
+
+    background:#198754;
+
+    color:white;
+
+}
+
+
+.btn-aprovar:hover{
+
+    background:#146c43;
+
+    transform:scale(1.05);
+
+}
+
+
+
+/* REPROVAR */
+
+.btn-reprovar{
+
+    background:#ffc107;
+
+    color:#664d03;
+
+}
+
+
+.btn-reprovar:hover{
+
+    background:#e0a800;
+
+    transform:scale(1.05);
+
+}
+
+
+
+/* EXCLUIR */
+
+.btn-excluir{
+
+    background:#dc3545;
+
+    color:white;
+
+}
+
+
+.btn-excluir:hover{
+
+    background:#a71d2a;
+
+    transform:scale(1.05);
+
+}
+
+
+
+/* ==============================
+   TABELA FÉRIAS
+============================== */
+
+
+.tabela-ferias{
+
+    background:white;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.tabela-ferias table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+
+.tabela-ferias thead{
+
+    background:#6f42c1;
+
+    color:white;
+
+}
+
+
+
+.tabela-ferias th{
+
+    padding:18px;
+
+    text-align:left;
+
+    font-weight:600;
+
+}
+
+
+
+.tabela-ferias td{
+
+    padding:16px 18px;
+
+    color:#555;
+
+    border-bottom:1px solid #eee;
+
+}
+
+
+
+.tabela-ferias tbody tr:hover{
+
+    background:#faf7ff;
+
+}
+
+
+
+/* STATUS */
+
+.status-aprovada{
+
+    background:#d1e7dd;
+
+    color:#0f5132;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}
+
+
+
+.status-pendente{
+
+    background:#fff3cd;
+
+    color:#664d03;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}
+
+
+
+.status-reprovada{
+
+    background:#f8d7da;
+
+    color:#842029;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>PeopleHub - Dashboard</title>
+
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+
+</head>
+
+<body>
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside id="sidebar">
+
+
+<div id="sidebar-content">
+
+
+    <!-- LOGO -->
+
+    <div id="logo">
+
+        <img
+            src="{{ url_for('static', filename='img/logo.png') }}"
+            alt="PeopleHub"
+        >
+
+        <h2>PeopleHub</h2>
+
+        <span>Gestão de Pessoas</span>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <ul>
+
+
+            <!-- DASHBOARD -->
+
+            <li class="ativo">
+
+                <a href="{{ url_for('dashboard.dashboard_page') }}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+
+            <!-- COLABORADORES -->
+
+            {% if session.get("perfil") == "Gestor" %}
+
+            <li>
+
+                <a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Colaboradores
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+
+            <!-- METAS -->
+
+            <li>
+
+                <a href="{{ url_for('metas.pagina_metas') }}">
+
+                    <i class="fa-solid fa-bullseye"></i>
+
+                    {% if session.get("perfil") == "Gestor" %}
+                        Metas
+                    {% else %}
+                        Minhas Metas
+                    {% endif %}
+
+                </a>
+
+            </li>
+
+
+            <!-- AVALIAÇÕES -->
+
+            <li>
+
+                <a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    {% if session.get("perfil") == "Gestor" %}
+                        Avaliações
+                    {% else %}
+                        Minhas Avaliações
+                    {% endif %}
+
+                </a>
+
+            </li>
+
+
+            <!-- TREINAMENTOS -->
+
+            <li>
+
+                <a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    Treinamentos
+
+                </a>
+
+            </li>
+
+
+            <!-- FEEDBACK -->
+
+            <li>
+
+                <a href="{{ url_for('feedback.pagina_feedback') }}">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    Feedback
+
+                </a>
+
+            </li>
+
+
+            <!-- PLANO DE CARREIRA -->
+
+            <li>
+
+                <a href="{{ url_for('carreira.pagina_carreira') }}">
+
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                    Plano de Carreira
+
+                </a>
+
+            </li>
+
+
+            <!-- FÉRIAS -->
+
+            <li>
+
+                <a href="{{ url_for('ferias.pagina_ferias') }}">
+
+                    <i class="fa-solid fa-plane"></i>
+
+                    {% if session.get("perfil") == "Gestor" %}
+                        Férias
+                    {% else %}
+                        Minhas Férias
+                    {% endif %}
+
+                </a>
+
+            </li>
+
+
+            <!-- PONTO -->
+
+            <li>
+
+                <a href="{{ url_for('ponto.pagina_ponto') }}">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    {% if session.get("perfil") == "Gestor" %}
+                        Controle de Ponto
+                    {% else %}
+                        Meu Ponto
+                    {% endif %}
+
+                </a>
+
+            </li>
+
+
+            <!-- CONFIGURAÇÕES -->
+
+            {% if session.get("perfil") == "Gestor" %}
+
+            <li>
+
+                <a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Configurações
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+
+        </ul>
+
+    </nav>
+
+</div>
+
+
+<!-- SAIR -->
+
+<button id="btn-sair">
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+
+    Sair
+
+</button>
+
+
+</aside>
+
+<!-- ==========================================
+     CONTEÚDO PRINCIPAL
+========================================== -->
+
+<main>
+
+
+<!-- CABEÇALHO -->
+
+<header class="topo-dashboard">
+
+    <div>
+
+        {% if session.get("perfil") == "Gestor" %}
+
+            <h1>
+                Bem-vindo ao PeopleHub
+            </h1>
+
+            <p>
+                Visão geral da gestão de pessoas.
+            </p>
+
+        {% else %}
+
+            <h1>
+                Olá, {{ dados.nome }}!
+            </h1>
+
+            <p>
+                Acompanhe suas informações no PeopleHub.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</header>
+
+
+
+<!-- ==========================================
+     DASHBOARD DO GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+
+<section class="cards">
+
+
+    <!-- COLABORADORES -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-users"></i>
+
+        <h3>
+            Colaboradores
+        </h3>
+
+        <strong>
+            {{ dados.colaboradores }}
+        </strong>
+
+        <p>
+            Colaboradores ativos
+        </p>
+
+    </div>
+
+
+    <!-- FÉRIAS -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-plane"></i>
+
+        <h3>
+            Férias
+        </h3>
+
+        <strong>
+            {{ dados.ferias }}
+        </strong>
+
+        <p>
+            Solicitações
+        </p>
+
+    </div>
+
+
+    <!-- TREINAMENTOS -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-graduation-cap"></i>
+
+        <h3>
+            Treinamentos
+        </h3>
+
+        <strong>
+            {{ dados.treinamentos }}
+        </strong>
+
+        <p>
+            Cursos disponíveis
+        </p>
+
+    </div>
+
+
+    <!-- AVALIAÇÕES -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        <h3>
+            Avaliações
+        </h3>
+
+        <strong>
+            {{ dados.avaliacoes }}
+        </strong>
+
+        <p>
+            Avaliações realizadas
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ==========================================
+     RESUMO DO GESTOR
+========================================== -->
+
+<section class="resumo">
+
+    <h2>
+        Resumo da Empresa
+    </h2>
+
+
+    <div class="resumo-box">
+
+
+        <div>
+
+            <i class="fa-solid fa-user-check"></i>
+
+            <p>
+                Usuários cadastrados
+            </p>
+
+            <b>
+                {{ dados.colaboradores }}
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-bullseye"></i>
+
+            <p>
+                Metas
+            </p>
+
+            <b>
+                {{ dados.metas }}
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-clock"></i>
+
+            <p>
+                Registros de Ponto
+            </p>
+
+            <b>
+                {{ dados.pontos }}
+            </b>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     DASHBOARD DO FUNCIONÁRIO
+========================================== -->
+
+{% else %}
+
+
+<section class="cards">
+
+
+    <!-- MINHAS FÉRIAS -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-plane"></i>
+
+        <h3>
+            Minhas Férias
+        </h3>
+
+        <strong>
+            {{ dados.ferias }}
+        </strong>
+
+        <p>
+            Solicitações de férias
+        </p>
+
+    </div>
+
+
+    <!-- MEU PONTO -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-clock"></i>
+
+        <h3>
+            Meu Ponto
+        </h3>
+
+        <strong>
+            {{ dados.pontos }}
+        </strong>
+
+        <p>
+            Registros de ponto
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ==========================================
+     RESUMO DO FUNCIONÁRIO
+========================================== -->
+
+<section class="resumo">
+
+    <h2>
+        Meu Resumo
+    </h2>
+
+
+    <div class="resumo-box">
+
+
+        <div>
+
+            <i class="fa-solid fa-plane"></i>
+
+            <p>
+                Solicitações de Férias
+            </p>
+
+            <b>
+                {{ dados.ferias }}
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-clock"></i>
+
+            <p>
+                Registros de Ponto
+            </p>
+
+            <b>
+                {{ dados.pontos }}
+            </b>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+{% endif %}
+
+</main>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nova Avaliação - PeopleHub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nova_avaliacao.css') }}">
+
+</head>
+
+
+<body>
+
+
+<main>
+
+
+<header class="topo">
+
+<div>
+
+<h1>
+Nova Avaliação
+</h1>
+
+<p>
+Registrar avaliação de desempenho.
+</p>
+
+</div>
+
+</header>
+
+
+
+<section class="formulario-container">
+
+
+<div class="formulario-card">
+
+
+<div class="formulario-header">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<div>
+
+<h2>
+Avaliação de Desempenho
+</h2>
+
+<p>
+Preencha os dados da avaliação.
+</p>
+
+</div>
+
+</div>
+
+
+
+<form id="form-avaliacao">
+
+
+<div class="campo">
+
+<label>
+Colaborador
+</label>
+
+<select id="colaborador">
+
+<option value="">
+Selecione
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>
+Resultado da avaliação
+</label>
+
+<select id="resultado">
+
+<option value="Dentro das expectativas">
+Dentro das expectativas
+</option>
+
+<option value="Acima das expectativas">
+Acima das expectativas
+</option>
+
+<option value="Em desenvolvimento">
+Em desenvolvimento
+</option>
+
+<option value="Necessita acompanhamento">
+Necessita acompanhamento
+</option>
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label>
+Tipo
+</label>
+
+
+<select id="tipo">
+
+<option value="Desempenho">
+Desempenho
+</option>
+
+
+<option value="Comportamental">
+Comportamental
+</option>
+
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label>
+Pontos positivos
+</label>
+
+<textarea
+id="pontos_positivos"
+placeholder="Descreva os pontos positivos do colaborador">
+</textarea>
+
+</div>
+
+
+<div class="campo">
+
+<label>
+Pontos de melhoria
+</label>
+
+<textarea
+id="pontos_melhoria"
+placeholder="Descreva pontos que podem ser desenvolvidos">
+</textarea>
+
+</div>
+
+<div class="campo">
+
+<label>
+Feedback do colaborador
+</label>
+
+<textarea
+id="feedback_colaborador"
+placeholder="Digite o retorno do colaborador sobre a avaliação">
+</textarea>
+
+</div>
+
+
+<div class="campo">
+
+<label>
+Comentários gerais
+</label>
+
+<textarea
+id="comentario"
+placeholder="Digite observações da avaliação">
+</textarea>
+
+</div>
+
+
+
+<button type="submit">
+Salvar
+</button>
+
+
+</form>
+
+
+<p id="mensagem"></p>
+
+
+</div>
+
+
+</section>
+
+
+</main>
+
+<script src="{{ url_for('static', filename='js/nova_avaliacao.js') }}"></script>
+
+
+</body>
+
+</html>

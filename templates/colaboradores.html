@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Colaboradores - PeopleHub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/colaboradores.css') }}">
+
+</head>
+
+<body>
+
+<aside id="sidebar">
+
+<div id="sidebar-content">
+
+<div id="logo">
+
+<img src="{{ url_for('static', filename='img/logo.png') }}">
+
+<h2>PeopleHub</h2>
+
+<span>Gestão de Pessoas</span>
+
+</div>
+
+<nav>
+
+<ul>
+
+
+<li class="ativo">
+
+<a href="{{ url_for('dashboard.dashboard_page') }}">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+<i class="fa-solid fa-users"></i>
+
+Colaboradores
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('metas.pagina_metas') }}">
+
+<i class="fa-solid fa-bullseye"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+Metas
+{% else %}
+Minhas Metas
+{% endif %}
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+<i class="fa-solid fa-chart-line"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+Avaliações
+{% else %}
+Minhas Avaliações
+{% endif %}
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Treinamentos
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('feedback.pagina_feedback') }}">
+
+<i class="fa-solid fa-comments"></i>
+
+Feedback
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('carreira.pagina_carreira') }}">
+
+<i class="fa-solid fa-arrow-trend-up"></i>
+
+Plano de Carreira
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('ferias.pagina_ferias') }}">
+
+<i class="fa-solid fa-plane"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+Férias
+{% else %}
+Minhas Férias
+{% endif %}
+
+</a>
+
+</li>
+
+
+
+
+<li>
+
+<a href="{{ url_for('ponto.pagina_ponto') }}">
+
+<i class="fa-solid fa-clock"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+Controle de Ponto
+{% else %}
+Meu Ponto
+{% endif %}
+
+</a>
+
+</li>
+
+{% if session.get("perfil") == "Gestor" %}
+
+<li>
+
+<a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+    <i class="fa-solid fa-gear"></i>
+
+    Configurações
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+
+</ul>
+
+</nav>
+
+</div>
+
+<button id="btn-sair">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Sair
+</button>
+
+
+</aside>
+
+
+<main>
+
+<header class="topo">
+
+<div>
+
+<h1>Colaboradores</h1>
+
+<p>Gerencie todos os colaboradores da empresa.</p>
+
+</div>
+
+<a href="{{ url_for('colaboradores.novo_colaborador') }}">
+
+<button class="novo">
+
+<i class="fa-solid fa-user-plus"></i>
+
+Novo Colaborador
+
+</button>
+
+</a>
+
+</header>
+
+
+<section class="filtros">
+
+<input 
+id="pesquisa"
+type="text"
+placeholder="Pesquisar colaborador..."
+onkeyup="pesquisarColaborador()">
+
+<select 
+id="filtro-setor"
+onchange="filtrarColaborador()">
+
+<option value="">
+Todos os setores
+</option>
+
+<option value="RH">
+RH
+</option>
+
+<option value="Financeiro">
+Financeiro
+</option>
+
+<option value="TI">
+TI
+</option>
+
+<option value="Marketing">
+Marketing
+</option>
+
+</select>
+
+</section>
+
+
+<section class="tabela">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+<th>Cargo</th>
+<th>Setor</th>
+<th>Email</th>
+<th>Status</th>
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="lista-colaboradores">
+
+</tbody>
+
+</table>
+
+</section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/colaboradores.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Novo Colaborador - PeopleHub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/novo_colaborador.css') }}">
+
+</head>
+
+<body>
+
+
+<!-- ==============================
+     SIDEBAR
+============================== -->
+
+<aside id="sidebar">
+
+<div id="sidebar-content">
+
+
+<div id="logo">
+
+<img
+src="{{ url_for('static', filename='img/logo.png') }}"
+alt="PeopleHub"
+>
+
+<h2>PeopleHub</h2>
+
+<span>Gestão de Pessoas</span>
+
+</div>
+
+
+<nav>
+
+<ul>
+
+
+<li>
+
+<a href="{{ url_for('dashboard.dashboard_page') }}">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+
+<li class="ativo">
+
+<a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+<i class="fa-solid fa-users"></i>
+
+Colaboradores
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('metas.pagina_metas') }}">
+
+<i class="fa-solid fa-bullseye"></i>
+
+Metas
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Avaliações
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Treinamentos
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('feedback.pagina_feedback') }}">
+
+<i class="fa-solid fa-comments"></i>
+
+Feedback
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('carreira.pagina_carreira') }}">
+
+<i class="fa-solid fa-arrow-trend-up"></i>
+
+Plano de Carreira
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('ferias.pagina_ferias') }}">
+
+<i class="fa-solid fa-plane"></i>
+
+Férias
+
+</a>
+
+</li>
+
+
+<li>
+
+<a href="{{ url_for('ponto.pagina_ponto') }}">
+
+<i class="fa-solid fa-clock"></i>
+
+Controle de Ponto
+
+</a>
+
+</li>
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+<li>
+
+<a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+<i class="fa-solid fa-gear"></i>
+
+Configurações
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+</ul>
+
+</nav>
+
+
+</div>
+
+
+<button id="btn-sair">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Sair
+
+</button>
+
+
+</aside>
+
+
+
+<!-- ==============================
+     CONTEÚDO
+============================== -->
+
+<main>
+
+
+<header class="topo">
+
+<div>
+
+<h1>
+Novo Colaborador
+</h1>
+
+<p>
+Cadastre um novo colaborador no sistema.
+</p>
+
+</div>
+
+</header>
+
+
+
+<section class="formulario-container">
+
+
+<div class="formulario-card">
+
+
+<!-- ==============================
+     CABEÇALHO DO FORMULÁRIO
+============================== -->
+
+<div class="formulario-header">
+
+<i class="fa-solid fa-user-plus"></i>
+
+<div>
+
+<h2>
+Novo Colaborador
+</h2>
+
+<p>
+Cadastre os dados do colaborador e, se necessário, crie seu acesso.
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ==============================
+     FORMULÁRIO
+============================== -->
+
+<form id="form-colaborador">
+
+
+<input
+type="hidden"
+id="id"
+>
+
+
+<!-- NOME -->
+
+<div class="campo">
+
+<label for="nome">
+Nome completo
+</label>
+
+<input
+type="text"
+id="nome"
+placeholder="Digite o nome"
+required
+>
+
+</div>
+
+
+
+<!-- CARGO + SETOR -->
+
+<div class="linha">
+
+
+<div class="campo">
+
+<label for="cargo">
+Cargo
+</label>
+
+<input
+type="text"
+id="cargo"
+placeholder="Ex: Analista de Sistemas"
+required
+>
+
+</div>
+
+
+
+<div class="campo">
+
+<label for="setor">
+Setor
+</label>
+
+<input
+type="text"
+id="setor"
+placeholder="Ex: Tecnologia"
+required
+>
+
+</div>
+
+
+</div>
+
+
+
+<!-- EMAIL -->
+
+<div class="campo">
+
+<label for="email">
+E-mail
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="email@empresa.com"
+required
+>
+
+</div>
+
+
+
+<!-- STATUS -->
+
+<div class="campo">
+
+<label for="status">
+Status
+</label>
+
+<select id="status">
+
+<option value="Ativo">
+Ativo
+</option>
+
+<option value="Inativo">
+Inativo
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- ==============================
+     ACESSO AO SISTEMA
+============================== -->
+
+<div class="acesso-box">
+
+
+<div class="acesso-titulo">
+
+<i class="fa-solid fa-key"></i>
+
+<div>
+
+<h3>
+Acesso ao sistema
+</h3>
+
+<p>
+Deseja permitir que este colaborador faça login no PeopleHub?
+</p>
+
+</div>
+
+</div>
+
+
+
+<label class="checkbox-acesso">
+
+<input
+type="checkbox"
+id="criar_acesso"
+>
+
+<span>
+Criar acesso para este colaborador
+</span>
+
+</label>
+
+
+</div>
+
+
+
+<!-- ==============================
+     SENHAS
+============================== -->
+
+<div
+id="campos-acesso"
+style="display: none;"
+>
+
+
+<div class="linha">
+
+
+<div class="campo">
+
+<label for="senha">
+Senha
+</label>
+
+<div class="input-icon">
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+type="password"
+id="senha"
+placeholder="Digite a senha"
+>
+
+</div>
+
+</div>
+
+
+
+<div class="campo">
+
+<label for="confirmar_senha">
+Confirmar senha
+</label>
+
+<div class="input-icon">
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+type="password"
+id="confirmar_senha"
+placeholder="Confirme a senha"
+>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<p class="ajuda-senha">
+
+<i class="fa-solid fa-circle-info"></i>
+
+A senha será utilizada pelo colaborador para entrar no sistema.
+
+</p>
+
+
+</div>
+
+
+
+<!-- ==============================
+     BOTÃO
+============================== -->
+
+<button
+class="btn-cadastrar"
+type="submit"
+>
+
+<i class="fa-solid fa-save"></i>
+
+<span id="texto-botao">
+Cadastrar Colaborador
+</span>
+
+</button>
+
+
+</form>
+
+
+
+<!-- MENSAGEM -->
+
+<p id="mensagem"></p>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+
+
+<script>
+
+
+// ==========================================
+// MOSTRAR / ESCONDER CAMPOS DE ACESSO
+// ==========================================
+
+const checkboxAcesso =
+document.getElementById("criar_acesso");
+
+
+const camposAcesso =
+document.getElementById("campos-acesso");
+
+
+const senha =
+document.getElementById("senha");
+
+
+const confirmarSenha =
+document.getElementById("confirmar_senha");
+
+
+
+checkboxAcesso.addEventListener(
+"change",
+function(){
+
+    if(this.checked){
+
+        camposAcesso.style.display = "block";
+
+        senha.required = true;
+
+        confirmarSenha.required = true;
+
+    }
+    else{
+
+        camposAcesso.style.display = "none";
+
+        senha.required = false;
+
+        confirmarSenha.required = false;
+
+        senha.value = "";
+
+        confirmarSenha.value = "";
+
+    }
+
+});
+
+
+
+// ==========================================
+// VALIDAR SENHAS
+// ==========================================
+
+document
+.getElementById("form-colaborador")
+.addEventListener(
+"submit",
+function(event){
+
+
+    if(!checkboxAcesso.checked){
+        return;
+    }
+
+
+    const mensagem =
+    document.getElementById("mensagem");
+
+
+
+    // CONFIRMAR SENHA
+
+    if(senha.value !== confirmarSenha.value){
+
+        event.preventDefault();
+
+
+        mensagem.innerText =
+        "As senhas não coincidem.";
+
+        mensagem.style.color = "red";
+
+
+        return;
+
+    }
+
+
+
+    // REGRAS DA SENHA
+
+    const regraSenha =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+
+
+    if(!regraSenha.test(senha.value)){
+
+
+        event.preventDefault();
+
+
+        mensagem.innerHTML =
+        `
+        A senha deve possuir:<br>
+        ✔ mínimo de 8 caracteres<br>
+        ✔ pelo menos uma letra maiúscula<br>
+        ✔ pelo menos uma letra minúscula<br>
+        ✔ pelo menos um número
+        `;
+
+
+        mensagem.style.color = "red";
+
+
+        return;
+
+    }
+
+
+});
+
+</script>
+
+
+<script src="{{ url_for('static', filename='js/novo_colaborador.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+
+</body>
+
+</html>

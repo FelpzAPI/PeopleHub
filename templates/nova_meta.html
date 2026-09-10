@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nova Meta - PeopleHub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nova_meta.css') }}">
+</head>
+
+
+<body>
+
+
+<main>
+
+<header class="topo">
+
+<div>
+<h1>Nova Meta</h1>
+<p>Cadastrar uma nova meta para colaborador.</p>
+</div>
+
+</header>
+
+
+<section class="formulario-container">
+
+
+<div class="formulario-card">
+
+
+<div class="formulario-header">
+
+<i class="fa-solid fa-bullseye"></i>
+
+<div>
+<h2>Cadastro de Meta</h2>
+<p>Preencha os dados da meta.</p>
+</div>
+
+</div>
+
+
+
+<form id="form-meta">
+    <input type="hidden" id="id">
+
+
+<div class="campo">
+
+<label>Colaborador</label>
+
+<select id="colaborador" required>
+
+<option value="">
+Selecione um colaborador
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>Título da Meta</label>
+
+<input 
+type="text"
+id="titulo"
+placeholder="Ex: Melhorar produtividade"
+required>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>Descrição</label>
+
+<textarea
+id="descricao"
+placeholder="Descrição da meta">
+</textarea>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>Objetivo</label>
+
+<textarea
+id="objetivo"
+placeholder="Resultado esperado">
+</textarea>
+
+</div>
+
+
+
+<div class="linha">
+
+
+<div class="campo">
+
+<label>Prazo</label>
+
+<input 
+type="date"
+id="prazo"
+required>
+
+</div>
+
+
+
+<div class="campo">
+
+<label>Status</label>
+
+<select id="status">
+
+<option value="Em andamento">
+Em andamento
+</option>
+
+<option value="Concluída">
+Concluída
+</option>
+
+<option value="Atrasada">
+Atrasada
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+
+<button class="btn-cadastrar" type="submit">
+
+<i class="fa-solid fa-save"></i>
+
+Salvar Meta
+
+</button>
+
+
+</form>
+
+
+<p id="mensagem"></p>
+
+
+</div>
+
+
+</section>
+
+
+</main>
+
+
+<script src="{{ url_for('static', filename='js/nova_meta.js') }}"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const hoje = new Date().toISOString().split("T")[0];
+
+    document.getElementById("prazo").min = hoje;
+
+});
+
+</script>
+
+</body>
+</html>

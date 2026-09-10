@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cadastrar Usuário - PeopleHub</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+
+
+</head>
+
+
+
+<body>
+
+    <aside id="sidebar">
+
+<div id="sidebar-content">
+
+
+<div id="logo">
+
+<img src="{{ url_for('static', filename='img/logo.png') }}">
+
+<h2>PeopleHub</h2>
+
+<span>Gestão de Pessoas</span>
+
+</div>
+
+
+
+<nav>
+
+<ul>
+
+
+<li>
+
+<a href="{{ url_for('dashboard.dashboard_page') }}">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+<i class="fa-solid fa-users"></i>
+
+Colaboradores
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('metas.pagina_metas') }}">
+
+<i class="fa-solid fa-bullseye"></i>
+
+Metas
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Avaliações
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Treinamentos
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('feedback.pagina_feedback') }}">
+
+<i class="fa-solid fa-comments"></i>
+
+Feedback
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('carreira.pagina_carreira') }}">
+
+<i class="fa-solid fa-arrow-trend-up"></i>
+
+Plano de Carreira
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('ferias.pagina_ferias') }}">
+
+<i class="fa-solid fa-plane"></i>
+
+Férias
+
+</a>
+
+</li>
+
+
+
+<li>
+
+<a href="{{ url_for('ponto.pagina_ponto') }}">
+
+<i class="fa-solid fa-clock"></i>
+
+Controle de Ponto
+
+</a>
+
+</li>
+
+
+
+
+<li class="ativo">
+
+<a href="{{ url_for('usuarios.gerenciamento') }}">
+
+<i class="fa-solid fa-gear"></i>
+
+Configurações
+
+</a>
+
+</li>
+
+
+
+</ul>
+
+</nav>
+
+
+</div>
+
+
+
+
+<button id="btn-sair">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Sair
+</button>
+
+
+
+</aside>
+
+
+
+<main class="cadastro-container">
+
+
+<div class="cadastro-box">
+
+
+
+<div class="cadastro-header">
+
+
+<i class="fa-solid fa-user-plus"></i>
+
+
+<h1>
+Cadastrar Usuário
+</h1>
+
+
+<p>
+Adicione colaboradores e gestores ao PeopleHub.
+</p>
+
+
+</div>
+
+
+
+
+
+<form id="form-cadastro">
+
+
+
+<div class="form-grid">
+
+
+
+<div class="form-group">
+
+<label>
+Nome completo
+</label>
+
+<input 
+type="text"
+id="nome"
+placeholder="Ex: João Silva"
+required>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Email corporativo
+</label>
+
+<input 
+type="email"
+id="email"
+placeholder="usuario@empresa.com"
+required>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Senha
+</label>
+
+<input 
+type="password"
+id="senha"
+placeholder="Senha de acesso"
+required>
+
+
+<div class="requisitos-senha">
+
+<p>A senha deve conter:</p>
+
+<ul>
+
+<li id="req-tamanho">
+    <i class="fa-solid fa-circle-xmark"></i>
+    Mínimo de 8 caracteres
+</li>
+
+
+<li id="req-maiuscula">
+    <i class="fa-solid fa-circle-xmark"></i>
+    Uma letra maiúscula
+</li>
+
+
+<li id="req-minuscula">
+    <i class="fa-solid fa-circle-xmark"></i>
+    Uma letra minúscula
+</li>
+
+
+<li id="req-numero">
+    <i class="fa-solid fa-circle-xmark"></i>
+    Um número
+</li>
+
+
+<li id="req-especial">
+    <i class="fa-solid fa-circle-xmark"></i>
+    Um caractere especial (@ # $ % & * !)
+</li>
+
+
+</ul>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Setor
+</label>
+
+<input 
+type="text"
+id="setor"
+placeholder="Ex: RH, TI">
+
+</div>
+
+
+
+
+
+<div class="form-group form-full">
+
+<label>
+Perfil de acesso
+</label>
+
+
+<div class="perfis">
+
+
+<label class="perfil-card">
+
+<i class="fa-solid fa-user"></i>
+
+<br>
+
+<input
+type="radio"
+name="perfil"
+value="Colaborador"
+checked>
+
+<br>
+
+Funcionário
+
+</label>
+
+
+
+<label class="perfil-card">
+
+<i class="fa-solid fa-user-tie"></i>
+
+<br>
+
+<input
+type="radio"
+name="perfil"
+value="Gestor">
+
+<br>
+
+Gestor
+
+</label>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="form-group form-full">
+
+<label>
+Cargo
+</label>
+
+<input 
+type="text"
+id="cargo"
+placeholder="Ex: Analista, Gerente">
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+<button type="submit">
+
+<i class="fa-solid fa-check"></i>
+
+Cadastrar Usuário
+
+</button>
+
+
+
+
+</form>
+
+
+
+<p id="mensagem"></p>
+
+
+
+</div>
+
+
+
+</main>
+
+<script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+.formulario-container{
+
+    display:flex;
+    justify-content:center;
+    padding:25px;
+
+}
+
+
+
+.formulario-card{
+
+    background:white;
+    width:650px;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+
+}
+
+
+
+.formulario-header{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+
+}
+
+
+
+.formulario-header i{
+
+    font-size:35px;
+    color:#6c3cff;
+
+}
+
+
+
+.formulario-header h2{
+
+    margin:0;
+    font-size:24px;
+
+}
+
+
+
+.formulario-header p{
+
+    margin:3px 0 0;
+    color:#777;
+
+}
+
+
+
+
+.campo{
+
+    display:flex;
+    flex-direction:column;
+    margin-bottom:14px;
+
+}
+
+
+
+.campo label{
+
+    font-weight:600;
+    margin-bottom:5px;
+
+}
+
+
+
+.campo input,
+.campo select,
+.campo textarea{
+
+    padding:11px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    font-family:Jost;
+    font-size:14px;
+    outline:none;
+
+}
+
+
+
+.campo textarea{
+
+    resize:none;
+    height:90px;
+
+}
+
+
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+
+    border-color:#6c3cff;
+
+}
+
+
+
+
+.linha{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+
+}
+
+
+
+
+.btn-cadastrar{
+
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:#6c3cff;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+
+
+.btn-cadastrar:hover{
+
+    transform:translateY(-2px);
+    opacity:.9;
+
+}
+
+
+
+
+#mensagem{
+
+    text-align:center;
+    margin-top:15px;
+    font-weight:600;
+
+}

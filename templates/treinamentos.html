@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Treinamentos - PeopleHub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/treinamentos.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     SIDEBAR
+============================== -->
+
+<aside id="sidebar">
+
+    <div id="sidebar-content">
+
+
+        <!-- LOGO -->
+
+        <div id="logo">
+
+            <img
+                src="{{ url_for('static', filename='img/logo.png') }}"
+                alt="PeopleHub"
+            >
+
+            <h2>PeopleHub</h2>
+
+            <span>Gestão de Pessoas</span>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <nav>
+
+            <ul>
+
+
+                <!-- DASHBOARD -->
+
+                <li>
+
+                    <a href="{{ url_for('dashboard.dashboard_page') }}">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+
+                <!-- COLABORADORES -->
+
+                {% if session.get("perfil") == "Gestor" %}
+
+<li>
+    <a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+        <i class="fa-solid fa-users"></i>
+        Colaboradores
+    </a>
+</li>
+
+{% endif %}
+
+
+                <!-- METAS -->
+
+                <li>
+
+                    <a href="{{ url_for('metas.pagina_metas') }}">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Metas
+
+                        {% else %}
+
+                            Minhas Metas
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- AVALIAÇÕES -->
+
+                <li>
+
+                    <a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Avaliações
+
+                        {% else %}
+
+                            Minhas Avaliações
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- TREINAMENTOS -->
+
+                <li class="ativo">
+
+                    <a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        Treinamentos
+
+                    </a>
+
+                </li>
+
+
+                <!-- FEEDBACK -->
+
+                <li>
+
+                    <a href="{{ url_for('feedback.pagina_feedback') }}">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Feedback
+
+                    </a>
+
+                </li>
+
+
+                <!-- PLANO DE CARREIRA -->
+
+                <li>
+
+                    <a href="{{ url_for('carreira.pagina_carreira') }}">
+
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+
+                        Plano de Carreira
+
+                    </a>
+
+                </li>
+
+
+                <!-- FÉRIAS -->
+
+                <li>
+
+                    <a href="{{ url_for('ferias.pagina_ferias') }}">
+
+                        <i class="fa-solid fa-plane"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Férias
+
+                        {% else %}
+
+                            Minhas Férias
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- PONTO -->
+
+                <li>
+
+                    <a href="{{ url_for('ponto.pagina_ponto') }}">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        {% if session.get("perfil") == "Gestor" %}
+
+                            Controle de Ponto
+
+                        {% else %}
+
+                            Meu Ponto
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- CONFIGURAÇÕES -->
+
+                {% if session.get("perfil") == "Gestor" %}
+
+                <li>
+
+                    <a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Configurações
+
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+
+            </ul>
+
+        </nav>
+
+
+    </div>
+
+
+    <!-- SAIR -->
+
+    <button id="btn-sair">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Sair
+
+    </button>
+
+
+</aside>
+
+
+
+<!-- ==============================
+     CONTEÚDO
+============================== -->
+
+<main>
+
+
+    <!-- CABEÇALHO -->
+
+    <header class="topo">
+
+        <div>
+
+            <h1>
+                Treinamentos
+            </h1>
+
+            <p>
+
+                {% if session.get("perfil") == "Gestor" %}
+
+                    Gerencie os cursos e treinamentos dos colaboradores.
+
+                {% else %}
+
+                    Consulte os cursos e treinamentos disponíveis.
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <!-- NOVO TREINAMENTO
+             SOMENTE GESTOR -->
+
+        {% if session.get("perfil") == "Gestor" %}
+
+        <button
+            class="novo"
+            onclick="abrirFormularioTreinamento()"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Novo Treinamento
+
+        </button>
+
+        {% endif %}
+
+
+    </header>
+
+
+
+    <!-- ==============================
+         CARDS
+    ============================== -->
+
+    <section class="cards">
+
+
+        <div class="card-info">
+
+            <h3>
+                Total de Cursos
+            </h3>
+
+            <span id="total-treinamentos">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="card-info">
+
+            <h3>
+                Total de Carga Horária
+            </h3>
+
+            <span id="carga-treinamentos">
+                0h
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         PESQUISA
+    ============================== -->
+
+    <section class="filtros">
+
+
+        <input
+            id="pesquisa"
+            type="text"
+            onkeyup="pesquisarTreinamento()"
+            placeholder="Pesquisar treinamento..."
+        >
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         TABELA
+    ============================== -->
+
+    <section class="tabela">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Treinamento
+                    </th>
+
+
+                    <th>
+                        Descrição
+                    </th>
+
+
+                    <th>
+                        Carga Horária
+                    </th>
+
+
+                    <th>
+                        Link
+                    </th>
+
+                    <th>Status</th>
+
+
+                    <!-- AÇÕES SOMENTE GESTOR -->
+
+                    {% if session.get("perfil") == "Gestor" %}
+
+                    <th>
+                        Ações
+                    </th>
+
+                    {% endif %}
+
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="lista-treinamentos">
+
+            </tbody>
+
+
+        </table>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         MODAL NOVO TREINAMENTO
+         SOMENTE GESTOR
+    ============================== -->
+
+    {% if session.get("perfil") == "Gestor" %}
+
+    <div
+        id="modal-treinamento"
+        class="modal"
+    >
+
+
+        <div class="formulario-card treinamento-modal">
+
+
+            <!-- CABEÇALHO DO FORMULÁRIO -->
+
+            <div class="formulario-header">
+
+
+                <div class="icone-form">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2 id="titulo-modal">
+
+                        Novo Treinamento
+
+                    </h2>
+
+
+                    <p>
+
+                        Cadastre um novo curso ou capacitação.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- FORMULÁRIO -->
+
+            <form id="form-treinamento">
+
+
+                <!-- ID PARA EDIÇÃO -->
+
+                <input
+                    type="hidden"
+                    id="id-treinamento"
+                >
+
+
+
+                <!-- NOME + CARGA HORÁRIA -->
+
+                <div class="linha">
+
+
+                    <div class="campo">
+
+
+                        <label>
+                            Nome do treinamento
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="titulo"
+                            placeholder="Ex: LGPD e Segurança da Informação"
+                            required
+                        >
+
+
+                    </div>
+
+                    <!-- TIPO + PLATAFORMA -->
+
+                    <div class="linha">
+
+                        <div class="campo">
+
+                            <label>
+                                Tipo do conteúdo
+                            </label>
+
+                            <select id="tipo">
+
+                                <option value="youtube">
+                                    Vídeo (YouTube)
+                                </option>
+
+                                <option value="pdf">
+                                    PDF
+                                </option>
+
+                                <option value="curso">
+                                    Curso / Plataforma Externa
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label>
+                                Plataforma
+                            </label>
+
+                            <input
+                                type="text"
+                                id="plataforma"
+                                placeholder="Ex: YouTube, Alura, Udemy..."
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="campo">
+
+
+                        <label>
+                            Carga horária
+                        </label>
+
+
+                        <div class="input-icon">
+
+
+                            <i class="fa-solid fa-clock"></i>
+
+
+                            <input
+                                type="number"
+                                id="carga_horaria"
+                                placeholder="Ex: 20"
+                                min="1"
+                                required
+                            >
+
+
+                            <span>
+                                horas
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DESCRIÇÃO -->
+
+                <div class="campo">
+
+
+                    <label>
+                        Descrição
+                    </label>
+
+
+                    <textarea
+                        id="descricao"
+                        placeholder="Descreva o objetivo do treinamento..."
+                    ></textarea>
+
+
+                </div>
+
+
+                <!-- LINK -->
+
+                <div class="campo">
+
+
+                    <label>
+                        Link do curso
+                    </label>
+
+
+                    <div class="input-icon">
+
+
+                        <i class="fa-solid fa-link"></i>
+
+
+                        <input
+                            type="text"
+                            id="link"
+                            placeholder="https://"
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Conteúdo / Capítulos
+                    </label>
+
+                    <textarea
+                        id="conteudo"
+                        placeholder="Ex:
+
+                1. Introdução
+                2. Módulo 1
+                3. Módulo 2
+                4. Projeto Final"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- BOTÕES -->
+
+                <div class="acoes-form">
+
+
+                    <button
+                        type="button"
+                        onclick="fecharFormularioTreinamento()"
+                        class="btn-cancelar"
+                    >
+
+                        Cancelar
+
+                    </button>
+
+
+
+                    <button
+                        type="submit"
+                        class="btn-cadastrar"
+                    >
+
+                        <i class="fa-solid fa-save"></i>
+
+                        Salvar Treinamento
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+            <p id="mensagem"></p>
+
+
+        </div>
+
+
+    </div>
+
+    {% endif %}
+
+
+<!-- ==============================
+     MODAL VISUALIZAR TREINAMENTO
+============================== -->
+
+<div
+    id="modal-visualizar-treinamento"
+    class="modal"
+>
+
+
+    <div class="formulario-card treinamento-visualizacao">
+
+
+        <!-- CABEÇALHO -->
+
+        <div class="formulario-header">
+
+
+            <div class="icone-form">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2 id="visualizar-titulo">
+                    Treinamento
+                </h2>
+
+                <p id="visualizar-plataforma">
+                    Conteúdo do curso
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- DESCRIÇÃO -->
+
+        <div class="campo">
+
+            <label>
+                Descrição
+            </label>
+
+
+            <p id="visualizar-descricao">
+                
+            </p>
+
+        </div>
+
+
+
+        <!-- CONTEÚDO -->
+
+        <div
+            id="visualizar-conteudo"
+            class="campo"
+        >
+
+
+        </div>
+
+
+
+        <!-- CAPÍTULOS -->
+
+        <div class="campo">
+
+
+            <label>
+                Capítulos
+            </label>
+
+
+            <ul id="visualizar-capitulos">
+
+            </ul>
+
+
+        </div>
+
+
+
+        <!-- PLAYER -->
+
+        <div
+            id="visualizar-player"
+            style="display:none;"
+        >
+
+        </div>
+
+
+
+        <!-- BOTÕES -->
+
+        <div class="acoes-form">
+
+
+            <button
+                type="button"
+                onclick="fecharVisualizacaoTreinamento()"
+                class="btn-cancelar"
+            >
+
+                Fechar
+
+            </button>
+
+
+
+            <a
+                id="btn-acessar-curso"
+                target="_blank"
+                class="btn-cadastrar"
+                style="display:none;"
+            >
+
+                Acessar curso na plataforma
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</main>
+
+
+
+<!-- ==============================
+     PERFIL DO USUÁRIO
+============================== -->
+
+<script>
+
+window.perfilUsuario =
+    "{{ session.get('perfil') }}";
+
+</script>
+
+
+
+<!-- ==============================
+     JAVASCRIPT
+============================== -->
+
+<script src="{{ url_for('static', filename='js/treinamentos.js') }}"></script>
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+<script src="{{ url_for('static', filename='js/novo_treinamento.js') }}"></script>
+
+{% endif %}
+
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+
+</body>
+
+</html>

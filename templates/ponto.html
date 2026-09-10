@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Controle de Ponto - PeopleHub</title>
+
+
+<!-- ==========================================
+     FONTES
+========================================== -->
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+
+<!-- ==========================================
+     FONT AWESOME
+========================================== -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<!-- ==========================================
+     CSS PRINCIPAL
+========================================== -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+
+<!-- ==========================================
+     CSS DO PONTO
+========================================== -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/ponto.css') }}">
+
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside id="sidebar">
+
+<div id="sidebar-content">
+
+
+<!-- ==========================================
+     LOGO
+========================================== -->
+
+<div id="logo">
+
+<img
+    src="{{ url_for('static', filename='img/logo.png') }}"
+    alt="PeopleHub"
+>
+
+<h2>
+PeopleHub
+</h2>
+
+<span>
+Gestão de Pessoas
+</span>
+
+</div>
+
+
+<!-- ==========================================
+     MENU
+========================================== -->
+
+<nav>
+
+<ul>
+
+
+<!-- ==========================================
+     DASHBOARD
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('dashboard.dashboard_page') }}">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     COLABORADORES
+     SOMENTE GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<li>
+
+<a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+<i class="fa-solid fa-users"></i>
+
+Colaboradores
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+<!-- ==========================================
+     METAS
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('metas.pagina_metas') }}">
+
+<i class="fa-solid fa-bullseye"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+
+Metas
+
+{% else %}
+
+Minhas Metas
+
+{% endif %}
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     AVALIAÇÕES
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+<i class="fa-solid fa-chart-line"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+
+Avaliações
+
+{% else %}
+
+Minhas Avaliações
+
+{% endif %}
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     TREINAMENTOS
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+Treinamentos
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     FEEDBACK
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('feedback.pagina_feedback') }}">
+
+<i class="fa-solid fa-comments"></i>
+
+Feedback
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     PLANO DE CARREIRA
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('carreira.pagina_carreira') }}">
+
+<i class="fa-solid fa-arrow-trend-up"></i>
+
+Plano de Carreira
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     FÉRIAS
+========================================== -->
+
+<li>
+
+<a href="{{ url_for('ferias.pagina_ferias') }}">
+
+<i class="fa-solid fa-plane"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+
+Férias
+
+{% else %}
+
+Minhas Férias
+
+{% endif %}
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     PONTO
+========================================== -->
+
+<li class="ativo">
+
+<a href="{{ url_for('ponto.pagina_ponto') }}">
+
+<i class="fa-solid fa-clock"></i>
+
+{% if session.get("perfil") == "Gestor" %}
+
+Controle de Ponto
+
+{% else %}
+
+Meu Ponto
+
+{% endif %}
+
+</a>
+
+</li>
+
+
+<!-- ==========================================
+     CONFIGURAÇÕES
+     SOMENTE GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<li>
+
+<a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+<i class="fa-solid fa-gear"></i>
+
+Configurações
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+</ul>
+
+</nav>
+
+
+</div>
+
+
+<!-- ==========================================
+     SAIR
+========================================== -->
+
+<button id="btn-sair">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Sair
+
+</button>
+
+
+</aside>
+
+
+
+<!-- ==========================================
+     CONTEÚDO PRINCIPAL
+========================================== -->
+
+<main>
+
+
+<!-- ==========================================
+     CABEÇALHO
+========================================== -->
+
+<header class="topo">
+
+<div>
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+<h1>
+Controle de Ponto
+</h1>
+
+<p>
+Gerencie entradas, saídas e jornadas dos colaboradores.
+</p>
+
+{% else %}
+
+<h1>
+Meu Ponto
+</h1>
+
+<p>
+Acompanhe seus registros de entrada, saída e horas trabalhadas.
+</p>
+
+{% endif %}
+
+
+</div>
+
+
+<!-- ==========================================
+     BOTÃO NOVO REGISTRO
+     GESTOR E FUNCIONÁRIO
+========================================== -->
+
+<button
+    class="novo"
+    onclick="abrirFormularioPonto()">
+
+
+<i class="fa-solid fa-plus"></i>
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+Novo Registro
+
+{% else %}
+
+Registrar Meu Ponto
+
+{% endif %}
+
+
+</button>
+
+
+</header>
+
+
+
+<!-- ==========================================
+     CARDS
+========================================== -->
+
+<section class="cards">
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+
+<!-- ==========================================
+     CARD COLABORADORES
+========================================== -->
+
+<div class="card-info">
+
+<h3>
+Colaboradores Ativos
+</h3>
+
+<span id="colaboradores-ativos">
+0
+</span>
+
+</div>
+
+
+<!-- ==========================================
+     CARD REGISTROS
+========================================== -->
+
+<div class="card-info">
+
+<h3>
+Registros
+</h3>
+
+<span id="registros-hoje">
+0
+</span>
+
+</div>
+
+
+<!-- ==========================================
+     CARD HORAS
+========================================== -->
+
+<div class="card-info">
+
+<h3>
+Total de Horas
+</h3>
+
+<span id="total-horas">
+0h
+</span>
+
+</div>
+
+
+{% else %}
+
+
+<!-- ==========================================
+     CARD MEUS REGISTROS
+========================================== -->
+
+<div class="card-info">
+
+<h3>
+Meus Registros
+</h3>
+
+<span id="registros-hoje">
+0
+</span>
+
+</div>
+
+
+<!-- ==========================================
+     CARD MINHAS HORAS
+========================================== -->
+
+<div class="card-info">
+
+<h3>
+Minhas Horas
+</h3>
+
+<span id="total-horas">
+0h
+</span>
+
+</div>
+
+
+{% endif %}
+
+
+</section>
+
+
+
+<!-- ==========================================
+     FILTROS
+     SOMENTE GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<section class="filtros">
+
+
+<!-- PESQUISA -->
+
+<input
+    id="pesquisa-ponto"
+    type="text"
+    placeholder="Pesquisar colaborador..."
+>
+
+
+<!-- FILTRO SETOR -->
+
+<select id="filtro-setor">
+
+<option value="">
+Todos os setores
+</option>
+
+<option value="RH">
+RH
+</option>
+
+<option value="TI">
+TI
+</option>
+
+<option value="Financeiro">
+Financeiro
+</option>
+
+</select>
+
+
+</section>
+
+{% endif %}
+
+
+
+<!-- ==========================================
+     TABELA
+========================================== -->
+
+<section class="tabela">
+
+<table>
+
+
+<thead>
+
+<tr>
+
+
+<!-- ==========================================
+     COLUNAS DO GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<th>
+Colaborador
+</th>
+
+<th>
+Setor
+</th>
+
+{% endif %}
+
+
+<!-- ==========================================
+     ENTRADA
+========================================== -->
+
+<th>
+Entrada
+</th>
+
+
+<!-- ==========================================
+     SAÍDA
+========================================== -->
+
+<th>
+Saída
+</th>
+
+
+<!-- ==========================================
+     HORAS
+========================================== -->
+
+<th>
+Horas Trabalhadas
+</th>
+
+
+<!-- ==========================================
+     AÇÕES
+     SOMENTE GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<th>
+Ações
+</th>
+
+{% endif %}
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="lista-ponto">
+
+</tbody>
+
+
+</table>
+
+</section>
+
+
+
+<!-- ==========================================
+     MODAL DE PONTO
+     GESTOR E FUNCIONÁRIO
+========================================== -->
+
+<div
+    id="modal-ponto"
+    class="modal"
+>
+
+
+<div class="formulario-card">
+
+
+<!-- ==========================================
+     TÍTULO
+========================================== -->
+
+<h2>
+
+<i class="fa-solid fa-clock"></i>
+
+
+{% if session.get("perfil") == "Gestor" %}
+
+Registro de Ponto
+
+{% else %}
+
+Registrar Meu Ponto
+
+{% endif %}
+
+
+</h2>
+
+
+
+<form id="form-ponto">
+
+
+<!-- ==========================================
+     ID OCULTO
+========================================== -->
+
+<input
+    type="hidden"
+    id="id"
+>
+
+
+<!-- ==========================================
+     COLABORADOR
+     SOMENTE GESTOR
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<div class="campo">
+
+<label>
+Colaborador
+</label>
+
+
+<select
+    id="colaborador_id"
+    required
+>
+
+<option value="">
+Selecione
+</option>
+
+</select>
+
+
+</div>
+
+{% endif %}
+
+
+
+<!-- ==========================================
+     ENTRADA
+========================================== -->
+
+<div class="campo">
+
+<label>
+Entrada
+</label>
+
+
+<input
+    type="datetime-local"
+    id="entrada"
+    required
+>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     SAÍDA
+========================================== -->
+
+<div class="campo">
+
+<label>
+Saída
+</label>
+
+
+<input
+    type="datetime-local"
+    id="saida"
+>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     HORAS TRABALHADAS
+========================================== -->
+
+<div class="campo">
+
+<label>
+Horas Trabalhadas
+</label>
+
+
+<input
+    type="number"
+    step="0.1"
+    id="horas_trabalhadas"
+    placeholder="Ex: 8"
+>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     BOTÕES
+========================================== -->
+
+<div class="acoes-form">
+
+
+<!-- CANCELAR -->
+
+<button
+    type="button"
+    onclick="fecharFormularioPonto()"
+    class="btn-cancelar"
+>
+
+Cancelar
+
+</button>
+
+
+<!-- SALVAR -->
+
+<button
+    type="submit"
+    class="btn-cadastrar"
+>
+
+{% if session.get("perfil") == "Gestor" %}
+
+Salvar Registro
+
+{% else %}
+
+Registrar Ponto
+
+{% endif %}
+
+</button>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+
+</main>
+
+
+
+<!-- ==========================================
+     JAVASCRIPT DO PONTO
+========================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/ponto.js') }}"
+></script>
+
+
+<!-- ==========================================
+     JAVASCRIPT DO LOGOUT
+========================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/logout.js') }}"
+></script>
+
+
+</body>
+
+</html>

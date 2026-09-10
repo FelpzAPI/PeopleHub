@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+    {% if session.get("perfil") == "Gestor" %}
+        Férias - PeopleHub
+    {% else %}
+        Minhas Férias - PeopleHub
+    {% endif %}
+</title>
+
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/ferias.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside id="sidebar">
+
+<div id="sidebar-content">
+
+
+    <!-- LOGO -->
+
+    <div id="logo">
+
+        <img
+            src="{{ url_for('static', filename='img/logo.png') }}"
+            alt="PeopleHub"
+        >
+
+        <h2>PeopleHub</h2>
+
+        <span>Gestão de Pessoas</span>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+    <ul>
+
+
+        <!-- DASHBOARD -->
+
+        <li>
+
+            <a href="{{ url_for('dashboard.dashboard_page') }}">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+        </li>
+
+
+        <!-- ==================================
+             SOMENTE GESTOR
+        ================================== -->
+
+        {% if session.get("perfil") == "Gestor" %}
+
+        <li>
+
+            <a href="{{ url_for('colaboradores.pagina_colaboradores') }}">
+
+                <i class="fa-solid fa-users"></i>
+
+                Colaboradores
+
+            </a>
+
+        </li>
+
+        {% endif %}
+
+
+        <!-- METAS -->
+
+        <li>
+
+            <a href="{{ url_for('metas.pagina_metas') }}">
+
+                <i class="fa-solid fa-bullseye"></i>
+
+                {% if session.get("perfil") == "Gestor" %}
+                    Metas
+                {% else %}
+                    Minhas Metas
+                {% endif %}
+
+            </a>
+
+        </li>
+
+
+        <!-- AVALIAÇÕES -->
+
+        <li>
+
+            <a href="{{ url_for('avaliacao.pagina_avaliacoes') }}">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                {% if session.get("perfil") == "Gestor" %}
+                    Avaliações
+                {% else %}
+                    Minhas Avaliações
+                {% endif %}
+
+            </a>
+
+        </li>
+
+
+        <!-- TREINAMENTOS -->
+
+        <li>
+
+            <a href="{{ url_for('treinamentos.pagina_treinamentos') }}">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                Treinamentos
+
+            </a>
+
+        </li>
+
+
+        <!-- FEEDBACK -->
+
+        <li>
+
+            <a href="{{ url_for('feedback.pagina_feedback') }}">
+
+                <i class="fa-solid fa-comments"></i>
+
+                Feedback
+
+            </a>
+
+        </li>
+
+
+        <!-- PLANO DE CARREIRA -->
+
+        <li>
+
+            <a href="{{ url_for('carreira.pagina_carreira') }}">
+
+                <i class="fa-solid fa-arrow-trend-up"></i>
+
+                Plano de Carreira
+
+            </a>
+
+        </li>
+
+
+        <!-- FÉRIAS -->
+
+        <li class="ativo">
+
+            <a href="{{ url_for('ferias.pagina_ferias') }}">
+
+                <i class="fa-solid fa-plane"></i>
+
+                {% if session.get("perfil") == "Gestor" %}
+                    Férias
+                {% else %}
+                    Minhas Férias
+                {% endif %}
+
+            </a>
+
+        </li>
+
+
+        <!-- PONTO -->
+
+        <li>
+
+            <a href="{{ url_for('ponto.pagina_ponto') }}">
+
+                <i class="fa-solid fa-clock"></i>
+
+                {% if session.get("perfil") == "Gestor" %}
+                    Controle de Ponto
+                {% else %}
+                    Meu Ponto
+                {% endif %}
+
+            </a>
+
+        </li>
+
+
+        <!-- CONFIGURAÇÕES -->
+
+        {% if session.get("perfil") == "Gestor" %}
+
+        <li>
+
+            <a href="{{ url_for('configuracoes.pagina_configuracoes') }}">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Configurações
+
+            </a>
+
+        </li>
+
+        {% endif %}
+
+
+    </ul>
+
+    </nav>
+
+
+</div>
+
+
+<!-- SAIR -->
+
+<button id="btn-sair">
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+
+    Sair
+
+</button>
+
+
+</aside>
+
+
+<!-- ==========================================
+     CONTEÚDO PRINCIPAL
+========================================== -->
+
+<main>
+
+
+<!-- ==========================================
+     CABEÇALHO
+========================================== -->
+
+<header class="topo-ferias">
+
+
+<div>
+
+    {% if session.get("perfil") == "Gestor" %}
+
+        <h1>
+            Gestão de Férias
+        </h1>
+
+        <p>
+            Controle solicitações e períodos de férias dos colaboradores.
+        </p>
+
+    {% else %}
+
+        <h1>
+            Minhas Férias
+        </h1>
+
+        <p>
+            Consulte suas solicitações e períodos de férias.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- NOVA SOLICITAÇÃO -->
+
+<button
+    class="novo-ferias"
+    onclick="abrirModalFerias()">
+
+    <i class="fa-solid fa-plus"></i>
+
+    Nova Solicitação
+
+</button>
+
+
+</header>
+
+
+<!-- ==========================================
+     CARDS
+========================================== -->
+
+<section class="cards-ferias">
+
+
+<!-- TOTAL -->
+
+<div class="card-ferias">
+
+    <h3>
+
+        {% if session.get("perfil") == "Gestor" %}
+            Total Solicitações
+        {% else %}
+            Minhas Solicitações
+        {% endif %}
+
+    </h3>
+
+    <span id="total-ferias">
+        --
+    </span>
+
+</div>
+
+
+<!-- APROVADAS -->
+
+<div class="card-ferias">
+
+    <h3>
+        Aprovadas
+    </h3>
+
+    <span id="ferias-aprovadas">
+        --
+    </span>
+
+</div>
+
+
+<!-- PENDENTES -->
+
+<div class="card-ferias">
+
+    <h3>
+        Aguardando
+    </h3>
+
+    <span id="ferias-pendentes">
+        --
+    </span>
+
+</div>
+
+
+<!-- EM FÉRIAS -->
+
+<div class="card-ferias">
+
+    <h3>
+        Em Férias
+    </h3>
+
+    <span id="ferias-andamento">
+        --
+    </span>
+
+</div>
+
+
+</section>
+
+
+<!-- ==========================================
+     FILTROS
+========================================== -->
+
+{% if session.get("perfil") == "Gestor" %}
+
+<section class="filtros-ferias">
+
+
+    <!-- PESQUISA -->
+
+    <input
+        id="pesquisa-ferias"
+        type="text"
+        placeholder="Pesquisar colaborador..."
+    >
+
+
+    <!-- SETOR -->
+
+    <select id="filtro-setor">
+
+        <option value="">
+            Todos os setores
+        </option>
+
+        <option value="RH">
+            RH
+        </option>
+
+        <option value="TI">
+            TI
+        </option>
+
+        <option value="Financeiro">
+            Financeiro
+        </option>
+
+    </select>
+
+
+    <!-- STATUS -->
+
+    <select id="filtro-status">
+
+        <option value="">
+            Todos os status
+        </option>
+
+        <option value="Aprovada">
+            Aprovada
+        </option>
+
+        <option value="Pendente">
+            Pendente
+        </option>
+
+        <option value="Reprovada">
+            Reprovada
+        </option>
+
+        <option value="Em Férias">
+            Em Férias
+        </option>
+
+    </select>
+
+
+</section>
+
+{% else %}
+
+<!-- FILTRO DE STATUS PARA FUNCIONÁRIO -->
+
+<section class="filtros-ferias">
+
+
+    <select id="filtro-status">
+
+        <option value="">
+            Todos os status
+        </option>
+
+        <option value="Aprovada">
+            Aprovada
+        </option>
+
+        <option value="Pendente">
+            Pendente
+        </option>
+
+        <option value="Reprovada">
+            Reprovada
+        </option>
+
+        <option value="Em Férias">
+            Em Férias
+        </option>
+
+    </select>
+
+
+</section>
+
+{% endif %}
+
+
+<!-- ==========================================
+     TABELA
+========================================== -->
+
+<section class="tabela-ferias">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+    {% if session.get("perfil") == "Gestor" %}
+
+        <th>
+            Colaborador
+        </th>
+
+        <th>
+            Setor
+        </th>
+
+    {% endif %}
+
+
+    <th>
+        Período
+    </th>
+
+
+    <th>
+        Dias
+    </th>
+
+
+    <th>
+        Status
+    </th>
+
+
+    {% if session.get("perfil") == "Gestor" %}
+
+        <th>
+            Ações
+        </th>
+
+    {% endif %}
+
+</tr>
+
+</thead>
+
+
+<tbody id="lista-ferias">
+
+</tbody>
+
+
+</table>
+
+
+</section>
+
+
+</main>
+
+
+<!-- ==========================================
+     MODAL NOVA SOLICITAÇÃO
+========================================== -->
+
+<div id="modal-ferias"
+     class="modal">
+
+
+<div class="formulario-card">
+
+
+<h2>
+
+    <i class="fa-solid fa-plane"></i>
+
+    {% if session.get("perfil") == "Gestor" %}
+        Solicitar Férias
+    {% else %}
+        Solicitar Minhas Férias
+    {% endif %}
+
+</h2>
+
+
+<form id="form-ferias">
+
+
+<!-- ID -->
+
+<input
+    type="hidden"
+    id="id"
+>
+
+
+<!-- ==========================================
+     COLABORADOR
+========================================== -->
+
+<div class="campo"
+     {% if session.get("perfil") != "Gestor" %}
+         style="display: none;"
+     {% endif %}
+>
+
+
+<label>
+    Colaborador
+</label>
+
+
+<select id="colaborador_id">
+
+    <option value="">
+        Selecione
+    </option>
+
+</select>
+
+
+</div>
+
+
+{% if session.get("perfil") != "Gestor" %}
+
+<p class="info-ferias">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    A solicitação será registrada automaticamente
+    para o seu perfil.
+
+</p>
+
+{% endif %}
+
+
+<!-- ==========================================
+     DATA INÍCIO
+========================================== -->
+
+<div class="campo">
+
+<label>
+    Data início
+</label>
+
+
+<input
+    type="date"
+    id="data_inicio"
+    required
+>
+
+</div>
+
+
+<!-- ==========================================
+     DATA FIM
+========================================== -->
+
+<div class="campo">
+
+<label>
+    Data fim
+</label>
+
+
+<input
+    type="date"
+    id="data_fim"
+    required
+>
+
+</div>
+
+
+<!-- ==========================================
+     BOTÕES
+========================================== -->
+
+<div class="acoes-form">
+
+
+<button
+    type="submit"
+    class="btn-cadastrar">
+
+    Solicitar
+
+</button>
+
+
+<button
+    type="button"
+    onclick="fecharModalFerias()">
+
+    Cancelar
+
+</button>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+<!-- ==========================================
+     JAVASCRIPT
+========================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+<script src="{{ url_for('static', filename='js/ferias.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+
+</body>
+
+</html>
